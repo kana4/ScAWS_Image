@@ -15,56 +15,54 @@ apt --assume-yes install r-base-core
 apt --assume-yes install r-recommended r-base-dev
 apt --assume-yes install build-essential libapparmor1 libcurl4-gnutls-dev libxml2-dev libssl-dev gdebi-core libcairo2-dev libxt-dev git-core
 
-# Lines for installing R on arm when a compiler is available
-# wget https://mirrors.nics.utk.edu/cran/src/base/R-4/R-4.0.4.tar.gz
-# tar -xvf R-4.0.4.tar.gz
-# cd R-4.0.4
-
-# Install bioawk into ~/tools
-toolsdir="./tools"
-if [ -d "$toolsdir" ]; then
-    echo "toolsdir exists"
-else
-    mkdir "$toolsdir" && cd "$toolsdir"
-    git clone https://github.com/lh3/bioawk
-    cd bioawk && make 
+# Install bioawk (latest), STAR (latest), FastQC (v0.11.9)
+if [ -a "/usr/bin/bioawk" ]; then
+    echo "bioawk exists"
+    else
+    git clone https://github.com/lh3/bioawk && cd bioawk && make
+    cp bioawk/bioawk /usr/bin
+    cd ../; rm -rf bioawk
 fi
 
-Install STAR, FastQC, Fastp, bbmap
-cd ./tools
-git clone https://github.com/alexdobin/STAR.git
-cd STAR/source
-make STAR
-
-#replaces "/home/$login_name", since when we run this script with sudo, it calls root profile rather than login profile
-# HOME="$(getent passwd $LOGNAME | cut -d: -f6)" 
-
-# On Ubuntu 20.04:
-login_name="$(logname)"
-
-# Add tools directory to profile
-if [ "$(grep -c "tools" "/home/""$login_name""/.profile")" -ge 3 ]; then
-    echo "Already added to .profile"
-else
-    echo "export PATH=$PATH:""/home/""$login_name""/tools" >> "/home/""$login_name""/.profile"
+if [ -a "/usr/bin/STAR" ]; then
+    echo "STAR exists"
+    else
+    git clone https://github.com/alexdobin/STAR.git
+    cd STAR/source
+    make STAR
+    cd ../; cd ../
+    cp STAR/bin/Linux_x86_64/STAR /usr/bin
+    rm -rf STAR
 fi
 
-# # Add bioawk directory to profile
-if [ "$(grep -c "bioawk" "/home/""$login_name""/.profile")" -ge 3 ]; then
-    echo "Already added to .profile"
-else
-    echo "export PATH=$PATH:""/home/""$login_name""/tools/bioawk" >> "/home/""$login_name""/.profile"
+# Install FastQC
+if [ -d "/usr/bin/FastQC" ]; then
+    echo "FastQC exists"
+    else
+    wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip
+    unzip fastqc_v0.11.9.zip
+    sudo chmod 755 FastQC/fastqc
+    cp -r FastQC /usr/bin
+    ###################### 
+    # Appended to ~/.profile: export PATH=/usr/bin/FastQC:$PATH
+    ######################
 fi
 
-# # Add STAR directory to profile
-if [ "$(grep -c "STAR" "/home/""$login_name""/.profile")" -ge 3 ]; then
-    echo "Already added to .profile"
-else
-    echo "export PATH=$PATH:""/home/""$login_name""/tools/STAR/bin/Linux_x86_64" >> "/home/""$login_name""/.profile"
+# Install Fastp
+if [ -a "/usr/bin/fastp" ]; then
+    echo "Fastp exists"
+    else
+    wget http://opengene.org/fastp/fastp
+    chmod a+x ./fastp
+    cp fastp /usr/bin
 fi
 
 # # Install Rust and Cargo
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # apt --assume-yes install cargo
 
-source "/home/""$login_name""/.profile"
+#-------------Miscellaneous-------------
+# Lines for installing R on arm when a compiler is available
+# wget https://mirrors.nics.utk.edu/cran/src/base/R-4/R-4.0.4.tar.gz
+# tar -xvf R-4.0.4.tar.gz
+# cd R-4.0.4

@@ -1,11 +1,13 @@
 #!/bin/bash
 
+mkdir ./samples
 cd ./samples
 
 # Downloads data from SRA, these links are nonuniform
 
 wget https://sra-download.ncbi.nlm.nih.gov/traces/sra47/SRZ/013734/SRR13734384/IVAR2_5D_CKDL200155936-1a-SI_GA_B2_H5NG5DSXY_S3_L004_R1_001.fastq.gz
 wget https://sra-pub-sars-cov2.s3.amazonaws.com/sra-src/SRR13734384/IVAR2_5D_CKDL200155936-1a-SI_GA_B2_H5NG5DSXY_S3_L004_R2_001.fastq.gz.1
+mv IVAR2_5D_CKDL200155936-1a-SI_GA_B2_H5NG5DSXY_S3_L004_R2_001.fastq.gz.1 IVAR2_5D_CKDL200155936-1a-SI_GA_B2_H5NG5DSXY_S3_L004_R2_001.fastq.gz
 
 wget https://sra-download.ncbi.nlm.nih.gov/traces/sra72/SRZ/013734/SRR13734385/IVAR3_5D_CKDL200155937-1a-SI_GA_C2_H5NG5DSXY_S2_L004_R1_001.fastq.gz
 wget https://sra-download.ncbi.nlm.nih.gov/traces/sra72/SRZ/013734/SRR13734385/IVAR3_5D_CKDL200155937-1a-SI_GA_C2_H5NG5DSXY_S2_L004_R2_001.fastq.gz

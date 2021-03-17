@@ -8,12 +8,12 @@ install.packages(c(
     , "ggplot2"
     , "data.table"
     , "patchwork"
+    , "tidyverse"
     ))
+
+# May need to install spatstat separately, recent error will probably be updated soon
 install.packages('https://cran.r-project.org/src/contrib/Archive/spatstat/spatstat_1.64-1.tar.gz', repos=NULL,type="source")
 install.packages("Seurat")
-
-#Large packages may stop, install
-install.packages("tidyverse")
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
