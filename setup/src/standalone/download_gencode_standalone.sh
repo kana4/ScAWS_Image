@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Downloads Gencode GrCH38
+# Downloads all latest files for Gencode GrCH38, tested draft just need to define variables
+original_directory="$(pwd)"
 mkdir "$data_directory"
+cd "$data_directory"
 
 # Get the links for all files in the latest gencode release
 lynx -listonly -dump "$reference_top_url" | awk '/^[ ]*[1-9][0-9]*\./{sub("^ [^.]*.[ ]*","",$0); print;}'| sort -u > "$links_file"

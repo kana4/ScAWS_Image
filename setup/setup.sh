@@ -7,7 +7,10 @@
 set -a
 
 ###########################Parameters###########################
-# data_directory="/Users/l/Desktop/projects/github/ScAWS_Image/data/"
+data_directory="/home/ubuntu/data/"
+data_directory_samples="$data_directory""samples/"
+star_genome_directory="$data_directory""genomes/"
+star_out_directory="$data_directory""counts/"
 # ./setup.sh -d data -s genomes -o counts -c 10xv2
 ###########################End Parameters###########################
 
@@ -17,8 +20,8 @@ do
     case "${flag}" in
         d) data_directory=${OPTARG};;
         s) star_genome_directory=${OPTARG};;
-        o) star_out_directory=${OPTARG}
-        c) chemistry=${OPTARG};;
+        o) star_out_directory=${OPTARG};;
+        c) chemistry=${OPTARG}
     esac
 done
 
@@ -53,10 +56,12 @@ genome_fasta="GRCh38.primary_assembly.genome.fa.gz"
 genome_gtf="gencode.v37.primary_assembly.annotation.gtf.gz"
 
 # Call scripts TODO: split these depending on user needs
+
 # ./src/install_prerequisites/apt_install.sh
 # ./src/install_prerequisites/r_install.r
-# ./src/download_files/download_gencode.sh
+
 # ./src/download_files/download_data.sh
-./src/download_files/download_whitelist.sh
-./src/generate_counts/generate_star_genome.sh
+# ./src/download_files/download_whitelist.sh
+
+# ./src/generate_counts/generate_star_genome.sh
 ./src/generate_counts/fastq_to_count.sh

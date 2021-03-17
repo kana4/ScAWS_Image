@@ -18,7 +18,7 @@ do if [ -f "$data_directory/$file" ]; then
 echo "$file exists"
 else
 wget -O "$data_directory/$file" "$reference_top_url$file"
-gunzip "$data_directory/$file"
+gunzip -f "$data_directory/$file"
 fi; done
 
 # Generate STAR genome
