@@ -5,6 +5,7 @@ apt --assume-yes update
 apt --assume-yes upgrade
 apt --assume-yes install libgit2-dev lynx pigz bison flex zlib1g zlib1g-dev make
 apt --assume-yes install openjdk-11-jre-headless
+apt --assume-yes install parallel
 
 # # Install R and dependencies
 # For aws arm instances, R doesn't install 4.0 yet but 3.6.3 and the arm fortran compiler is in beta, this script is being used on an intel instance 
@@ -44,7 +45,7 @@ if [ -d "/usr/bin/FastQC" ]; then
     sudo chmod 755 FastQC/fastqc
     cp -r FastQC /usr/bin
     ###################### 
-    # Appended to ~/.profile: export PATH=/usr/bin/FastQC:$PATH
+    # Add FastQC to the sudo path with sudo visudo
     ######################
 fi
 
@@ -78,8 +79,9 @@ apt --assume-yes install cargo
 
 #-------------Notes-------------
 
-# Don't forget to append ~/.profile for fastqc after running this script
-
+# 
+# Don't forget to add FastQC to the sudo path with sudo visudo
+# 
 # Lines for installing R on arm when a compiler is available
 # wget https://mirrors.nics.utk.edu/cran/src/base/R-4/R-4.0.4.tar.gz
 # tar -xvf R-4.0.4.tar.gz

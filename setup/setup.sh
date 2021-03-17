@@ -16,15 +16,15 @@ chemistry="10xv2"
 ###########################End Parameters###########################
 
 # Gets parameters from command line
-while getopts d:s:o:c: flag
-do
-    case "${flag}" in
-        d) data_directory=${OPTARG};;
-        s) star_genome_directory=${OPTARG};;
-        o) star_out_directory=${OPTARG};;
-        c) chemistry=${OPTARG}
-    esac
-done
+# while getopts d:s:o:c: flag
+# do
+#     case "${flag}" in
+#         d) data_directory=${OPTARG};;
+#         s) star_genome_directory=${OPTARG};;
+#         o) star_out_directory=${OPTARG};;
+#         c) chemistry=${OPTARG}
+#     esac
+# done
 
 # Set variables and run worker scripts
 threads="$(nproc)"
