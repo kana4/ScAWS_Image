@@ -7,7 +7,7 @@ apt --assume-yes install libgit2-dev lynx pigz bison flex zlib1g zlib1g-dev make
 apt --assume-yes install openjdk-11-jre-headless
 
 # # Install R and dependencies
-# For aws arm instances, R doesn't install 4.0 yet but 3.6.3 and the fortran compiler is in beta, this script is being used on an intel instance 
+# For aws arm instances, R doesn't install 4.0 yet but 3.6.3 and the arm fortran compiler is in beta, this script is being used on an intel instance 
 apt --assume-yes install dirmngr gnupg apt-transport-https ca-certificates software-properties-common
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
@@ -57,9 +57,16 @@ if [ -a "/usr/bin/fastp" ]; then
     cp fastp /usr/bin
 fi
 
+# Install conda and snakemake
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+conda install -c conda-forge mamba
+mamba create -c conda-forge -c bioconda -n snakemake snakemake
+conda activate snakemake
+
 # # Install Rust and Cargo
-# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-# apt --assume-yes install cargo
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+apt --assume-yes install cargo
 
 #-------------Miscellaneous-------------
 # Lines for installing R on arm when a compiler is available
