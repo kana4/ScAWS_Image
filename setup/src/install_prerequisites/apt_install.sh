@@ -48,6 +48,14 @@ if [ -d "/usr/bin/FastQC" ]; then
     ######################
 fi
 
+# Install Trimmomatic
+if [ -d "Trimmomatic-0.39" ]; then
+    echo "Trimmomatic exists"
+    else
+    wget https://github.com/usadellab/Trimmomatic/files/5854859/Trimmomatic-0.39.zip
+    unzip Trimmomatic-0.39.zip
+fi
+
 # Install Fastp
 if [ -a "/usr/bin/fastp" ]; then
     echo "Fastp exists"
@@ -68,7 +76,10 @@ conda activate snakemake
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 apt --assume-yes install cargo
 
-#-------------Miscellaneous-------------
+#-------------Notes-------------
+
+# Don't forget to append ~/.profile for fastqc after running this script
+
 # Lines for installing R on arm when a compiler is available
 # wget https://mirrors.nics.utk.edu/cran/src/base/R-4/R-4.0.4.tar.gz
 # tar -xvf R-4.0.4.tar.gz

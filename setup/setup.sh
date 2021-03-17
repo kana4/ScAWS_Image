@@ -11,7 +11,8 @@ data_directory="/home/ubuntu/data/"
 data_directory_samples="$data_directory""samples/"
 star_genome_directory="$data_directory""genomes/"
 star_out_directory="$data_directory""counts/"
-# ./setup.sh -d data -s genomes -o counts -c 10xv2
+chemistry="10xv2"
+# ./setup.sh -d /home/ubuntu/data/ -s genomes/ -o counts/ -c 10xv2
 ###########################End Parameters###########################
 
 # Gets parameters from command line
@@ -29,6 +30,7 @@ done
 threads="$(nproc)"
 data_directory_samples="$data_directory""samples/"
 data_directory_genomes="$data_directory""genomes/"
+star_out_directory="$data_directory""counts/"
 links_file="$data_directory_genomes""links.txt"
 
 # 10X genomics chemistry variables
@@ -62,6 +64,5 @@ genome_gtf="gencode.v37.primary_assembly.annotation.gtf.gz"
 
 # ./src/download_files/download_data.sh
 # ./src/download_files/download_whitelist.sh
-
 # ./src/generate_counts/generate_star_genome.sh
 ./src/generate_counts/fastq_to_count.sh

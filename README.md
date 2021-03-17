@@ -6,8 +6,8 @@ For this example workflow, we use an m2.4xlarge instance with an 800 gb EBS disk
 
 <ul>Software Installation (Bash)</ul>
 <ul>Reference and Data Download (Bash)</ul>
-<ul>Alignment/Count (Python/Snakemake)</ul>
-<ul>Processing/Visualization (R/Devtools/Python/Snakemake)</ul>
+<ul>Alignment/Count (Bash)</ul>
+<ul>Processing/Visualization (R/Devtools)</ul>
 
 The workflow investigates differential expression in disease and control states with sample data housed on the NCBI SRA. In addition to reviewing original findings, we generate new findings and visualizations. For more information, please refer to the [original paper by Kusnadi et al.](https://immunology.sciencemag.org/content/6/55/eabe4782).
 
