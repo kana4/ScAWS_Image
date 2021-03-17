@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Downloads Gencode GrCH38
 mkdir "$data_directory"
 
 # Get the links for all files in the latest gencode release
@@ -13,3 +14,4 @@ do
         wget "$link" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 0 --continue
     fi
 done
+
