@@ -9,6 +9,9 @@ install.packages(c(
     , "data.table"
     , "patchwork"
     , "tidyverse"
+    , "ggpubr"
+    , "ggsci"
+    , "plotly"
     ))
 
 # May need to install spatstat separately, recent error will probably be updated soon
@@ -27,7 +30,7 @@ BiocManager::install(c("GenomicFeatures"
                        , "rtracklayer"
                        , "Gviz"
                        , "topGO"
-                       , "scran"
+                       , "scuttle"
                        , "SingleR"
                        , "DropletUtils"
                        , "edgeR"
