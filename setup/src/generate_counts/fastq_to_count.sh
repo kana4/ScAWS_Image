@@ -29,7 +29,7 @@ for file_name in $(ls *.fastq.gz | sed -r 's/_R[12]_001[.]fastq[.]gz//' | uniq);
     # Trimmomatic to process read 1
     java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" SE -phred33 -threads "$threads" "$R1gz" "$trimmomatic_directory""minlencrop_""$R1" MINLEN:"$R1_length" CROP:"$R1_length" # Remove R1 shorter than $R1_length, crop all R1 reads to $R1_length 
     pigz -f "$trimmomatic_directory""minlencrop_""$R1"
-    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" PE -phred33 -threads "$threads" "$trimmomatic_directory""minlencrop_""$R1"".gz" "$R2gz" "$trimmomatic_directory""paired_""$R1"  "$trimmomatic_directory""singles_""$R1" "$trimmomatic_directory""paired_""$R2"  "$trimmomatic_directory""singles_""$R2" LEADING:"0" # Remove singletons
+    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" PE -phred33 -threads "$threads" "$trimmomatic_directory""minlencrop_""$R1"".gz" "$R2gz" "$trimmomatic_directory""paired_""$R1"  "$trimmomatic_directory""singles_""$R1" "$trimmomatic_directory""paired_""$R2"  "$trimmomatic_directory""singles_""$R2" LEADING:"0" # Remove singletons, don't cut bases
     pigz -f "$trimmomatic_directory"*
 
     # Align/count with STAR
@@ -42,7 +42,9 @@ for file_name in $(ls *.fastq.gz | sed -r 's/_R[12]_001[.]fastq[.]gz//' | uniq);
     --readFilesCommand zcat --readFilesIn "$trimmomatic_directory""paired_""$R2"".gz" "$trimmomatic_directory""paired_""$R1"".gz"
 #   --soloFeatures Gene GeneFull SJ Velocyto \
 #   --outReadsUnmapped Fastx \
+
+    # Remove trimmomatic processed files
+    rm -rf "$trimmomatic_directory"
 done
 
 cd "$original_directory"
-# https://jmorp.megabank.tohoku.ac.jp/dj1/datasets/tommo-jg2.0.0.beta-20200831/files/JG2.0.0beta.fa.gz?download=true
