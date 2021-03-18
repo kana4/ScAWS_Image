@@ -27,6 +27,7 @@ chemistry="10xv2"
 # done
 
 # Set variables and run worker scripts
+script_directory="$(pwd)"
 threads="$(nproc)"
 data_directory_samples="$data_directory""samples/"
 data_directory_genomes="$data_directory""genomes/"

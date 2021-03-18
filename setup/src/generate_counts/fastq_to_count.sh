@@ -6,29 +6,38 @@ cd "$data_directory_samples"
 mkdir "$star_out_directory"
 
 for file_name in $(ls *.fastq.gz | sed -r 's/_R[12]_001[.]fastq[.]gz//' | uniq); do
+
     # Make directories for samples and fastqc outputs
     counts_file_name_directory="$star_out_directory""$file_name"
     mkdir "$counts_file_name_directory"
     cd "$counts_file_name_directory"
-    mkdir "$counts_file_name_directory""/R1_fastqc"
-    mkdir "$counts_file_name_directory""/R2_fastqc"
-    R1="$data_directory_samples""$file_name""_R1_001.fastq.gz"
-    R2="$data_directory_samples""$file_name""_R2_001.fastq.gz"
+    r1_fastqc_directory="$counts_file_name_directory""/R1_fastqc/"
+    r2_fastqc_directory="$counts_file_name_directory""/R2_fastqc/"
+    trimmomatic_directory="$counts_file_name_directory""/trimmomatic/"
+    mkdir -p {"$r1_fastqc_directory","$r2_fastqc_directory","$trimmomatic_directory"}
+
+    # Remake sample file names, R1gz=full gzip name, R1=file name without path or gz, for outfile naming
+    R1="$file_name""_R1_001.fastq"
+    R1gz="$data_directory_samples""$R1"".gz"
+    R2="$file_name""_R2_001.fastq"
+    R2gz="$data_directory_samples""$R2"".gz"
+
     # Fastqc generate report
-    # zcat "$R1" | fastqc stdin -t "$threads" -o "$counts_file_name_directory""/R1_fastqc"
-    # zcat "$R2" | fastqc stdin -t "$threads" -o "$counts_file_name_directory""/R2_fastqc"
-    # Remove all read 1's (and their pairs) shorter than $R1_length, as we won't be able to assign these with hamming distance=1
-    # bioawk -c fastx '{ print $name, length($seq) }' < $R1 # Remove R1 shorter 
-    # java -jar trimmomatic-0.39.jar "$R1" MINLEN:"$R1_length" # Remove R1 shorter than $R1_length
+    zcat "$R1gz" | fastqc stdin -t "$threads" -o "$r1_fastqc_directory"
+    zcat "$R2gz" | fastqc stdin -t "$threads" -o "$r2_fastqc_directory"
+
+    # Trimmomatic to process read 1
+    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" SE -phred33 -threads "$threads" "$R1gz" "$""$R1""" MINLEN:"$R1_length" # Remove R1 shorter than $R1_length
+    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" SE -phred33 -threads "$threads" "$R1gz" "$""$R1""" CROP:"$R1_length" # Remove R1 shorter than $R1_length
     # java -jar ./trimmomatic-0.30.jar PE -threads "$threads" -phred33 R1.fastq R2.fastq R1_paired.fastq R1_singles.fastq R2_paired.fastq R2_singles.fastq
     # trimmomatic-0.39.jar # Remove singletons
-    STAR --runThreadN "$threads" --soloType CB_UMI_Simple \
-    --soloUMIlen "$umi_length" \
-    --soloBarcodeReadLength "$R1_length" \
-    --soloCBlen "$cb_length" \
-    --soloCBwhitelist "$whitelist" \
-    --outSAMtype BAM SortedByCoordinate --twopassMode Basic --genomeDir "$star_genome_directory" \
-    --readFilesCommand zcat --readFilesIn "$R2" "$R1"
+    # STAR --runThreadN "$threads" --soloType CB_UMI_Simple \
+    # --soloUMIlen "$umi_length" \
+    # --soloBarcodeReadLength "$R1_length" \
+    # --soloCBlen "$cb_length" \
+    # --soloCBwhitelist "$whitelist" \
+    # --outSAMtype BAM SortedByCoordinate --twopassMode Basic --genomeDir "$star_genome_directory" \
+    # --readFilesCommand zcat --readFilesIn "$R2" "$R1"
 #   --soloFeatures Gene GeneFull SJ Velocyto \
 #   --outReadsUnmapped Fastx \
 done
