@@ -26,18 +26,18 @@ for file_name in $(ls *.fastq.gz | sed -r 's/_R[12]_001[.]fastq[.]gz//' | uniq);
     zcat "$R1gz" | fastqc stdin -t "$threads" -o "$r1_fastqc_directory"
     zcat "$R2gz" | fastqc stdin -t "$threads" -o "$r2_fastqc_directory"
 
-    # Trimmomatic to process read 1
-    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" SE -phred33 -threads "$threads" "$R1gz" "$trimmomatic_directory""minlen_""$R1" MINLEN:"$R1_length" # Remove R1 shorter than $R1_length
-    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" SE -phred33 -threads "$threads" "$trimmomatic_directory""minlen_""$R1" "$trimmomatic_directory""crop_""$R1" CROP:"$R1_length" # Crop all R1 reads to $R1_length
-    pigz "$trimmomatic_directory"*
-    # java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" PE -threads "$threads" -phred33 "$trimmomatic_directory""crop_""$R1"".gz" "$R2gz" R1_paired.fastq R1_singles.fastq R2_paired.fastq R2_singles.fastq # Remove singletons
-    # STAR --runThreadN "$threads" --soloType CB_UMI_Simple \
-    # --soloUMIlen "$umi_length" \
-    # --soloBarcodeReadLength "$R1_length" \
-    # --soloCBlen "$cb_length" \
-    # --soloCBwhitelist "$whitelist" \
-    # --outSAMtype BAM SortedByCoordinate --twopassMode Basic --genomeDir "$star_genome_directory" \
-    # --readFilesCommand zcat --readFilesIn "$R2" "$R1"
+    # # Trimmomatic to process read 1
+    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" SE -phred33 -threads "$threads" "$R1gz" "$trimmomatic_directory""minlencrop_""$R1" MINLEN:"$R1_length" CROP:"$R1_length" # Remove R1 shorter than $R1_length, crop all R1 reads to $R1_length
+    pigz -f "$trimmomatic_directory""minlencrop_""$R1"
+    java -jar "$script_directory""/Trimmomatic-0.39/trimmomatic-0.39.jar" PE -phred33 -threads "$threads" "$trimmomatic_directory""minlencrop_""$R1"".gz" "$R2gz" "$trimmomatic_directory""paired_""$R1"  "$trimmomatic_directory""singles_""$R1" "$trimmomatic_directory""paired_""$R2"  "$trimmomatic_directory""singles_""$R2" LEADING:"3" # Remove singletons
+    pigz -f "$trimmomatic_directory"*
+    STAR --runThreadN "$threads" --soloType CB_UMI_Simple \
+    --soloUMIlen "$umi_length" \
+    --soloBarcodeReadLength "$R1_length" \
+    --soloCBlen "$cb_length" \
+    --soloCBwhitelist "$whitelist" \
+    --outSAMtype BAM SortedByCoordinate --twopassMode Basic --genomeDir "$star_genome_directory" \
+    --readFilesCommand zcat --readFilesIn "$trimmomatic_directory""paired_""$R2"".gz" "$trimmomatic_directory""paired_""$R1"".gz"
 #   --soloFeatures Gene GeneFull SJ Velocyto \
 #   --outReadsUnmapped Fastx \
 done
