@@ -12,6 +12,8 @@ install.packages(c(
     , "ggpubr"
     , "ggsci"
     , "plotly"
+    , "future"
+    , "Matrix"
     ))
 
 # May need to install spatstat separately, recent error will probably be updated soon
@@ -24,6 +26,7 @@ BiocManager::install(version = "3.12")
 
 BiocManager::install(c("GenomicFeatures"
                        , "AnnotationDbi"
+                       , "AnnotationHub"
                        , "biomaRt"
                        , "limma"
                        , "GenomicAlignments"
@@ -34,6 +37,7 @@ BiocManager::install(c("GenomicFeatures"
                        , "SingleR"
                        , "DropletUtils"
                        , "edgeR"
+                       , "celldex"
 ))
 
 
