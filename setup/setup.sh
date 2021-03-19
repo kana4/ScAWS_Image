@@ -3,6 +3,10 @@
 # Master script for installation, download, and generation of read counts
 # Please run this script with sudo
 
+    ###################### 
+    # Add FastQC to the sudo path with sudo visudo and append /usr/bin/FastQC
+    ######################
+
 # Exports all set variables
 set -a
 
@@ -58,12 +62,14 @@ reference_top_url="ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/relea
 genome_fasta="GRCh38.primary_assembly.genome.fa.gz"
 genome_gtf="gencode.v37.primary_assembly.annotation.gtf.gz"
 
-# Call scripts TODO: split these depending on user needs
-
 # ./src/install_prerequisites/apt_install.sh
 # ./src/install_prerequisites/r_install.r
 
-# ./src/download_files/download_data.sh
-# ./src/download_files/download_whitelist.sh
-# ./src/generate_counts/generate_star_genome.sh
+    ###################### 
+    # Add FastQC to the sudo path with sudo visudo
+    ######################
+
+./src/download_files/download_data.sh
+./src/download_files/download_whitelist.sh
+./src/generate_counts/generate_star_genome.sh
 ./src/generate_counts/fastq_to_count.sh

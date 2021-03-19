@@ -43,10 +43,8 @@ if [ -d "/usr/bin/FastQC" ]; then
     wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip
     unzip fastqc_v0.11.9.zip
     sudo chmod 755 FastQC/fastqc
-    cp -r FastQC /usr/bin
-    ###################### 
-    # Add FastQC to the sudo path with sudo visudo
-    ######################
+    mv -r FastQC /usr/bin
+    rm fastqc_v0.11.9.zip
 fi
 
 # Install Trimmomatic
@@ -55,6 +53,7 @@ if [ -d "Trimmomatic-0.39" ]; then
     else
     wget https://github.com/usadellab/Trimmomatic/files/5854859/Trimmomatic-0.39.zip
     unzip Trimmomatic-0.39.zip
+    rm Trimmomatic-0.39.zip
 fi
 
 # Install Fastp
@@ -64,11 +63,13 @@ if [ -a "/usr/bin/fastp" ]; then
     wget http://opengene.org/fastp/fastp
     chmod a+x ./fastp
     cp fastp /usr/bin
+    rm fastp
 fi
 
 # Install conda and snakemake
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
+rm -f Miniconda3-latest-Linux-x86_64.sh
 conda install -c conda-forge mamba
 mamba create -c conda-forge -c bioconda -n snakemake snakemake
 conda activate snakemake
@@ -79,7 +80,9 @@ apt --assume-yes install cargo
 
 #-------------Notes-------------
 
-# 
+    ###################### 
+    # Add FastQC to the sudo path with sudo visudo
+    ######################
 # Don't forget to add FastQC to the sudo path with sudo visudo
 # 
 # Lines for installing R on arm when a compiler is available

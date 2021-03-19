@@ -2,6 +2,7 @@
 
 # Downloads data from SRA, links are nonuniform
 original_directory="$(pwd)"
+mkdir "$data_directory"
 mkdir "$data_directory_samples"
 cd "$data_directory_samples"
 
