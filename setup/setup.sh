@@ -6,6 +6,7 @@
     ###################### 
     # Add FastQC to the sudo path with sudo visudo and append /usr/bin/FastQC
     ######################
+# Requires restart after install
 
 # Exports all set variables
 set -a
@@ -68,8 +69,9 @@ genome_gtf="gencode.v37.primary_assembly.annotation.gtf.gz"
     ###################### 
     # Add FastQC to the sudo path with sudo visudo
     ######################
+# Requires restart after system install
 
-./src/download_files/download_data.sh
-./src/download_files/download_whitelist.sh
-./src/generate_counts/generate_star_genome.sh
+# ./src/download_files/download_data.sh
+# ./src/download_files/download_whitelist.sh
+# ./src/generate_counts/generate_star_genome.sh
 ./src/generate_counts/fastq_to_count.sh
